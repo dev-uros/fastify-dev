@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  db:
+    container_name: fastify-template-database
+    image: postgres:14.1-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fastify_template_database
+    ports:
+      - '7604:5432'
+    volumes:
+      - fastify-template-database:/var/lib/postgresql/data
+  db-test:
+    container_name: fastify-template-testing-database
+    image: postgres:14.1-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fastify_template_testing_database
+    ports:
+      - '7603:5432'
+  redis:
+    container_name: fastify-template-redis
+    image: redis:7.2.0-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - fastify-template-redis:/data
+volumes:
+  fastify-template-database:
+    driver: local
+  fastify-template-redis:
+    driver: local
